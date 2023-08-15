@@ -1,6 +1,7 @@
 <script>
   import {Greet} from '../wailsjs/go/main/App.js'
-  import heroImage from './assets/images/hero-image.png';
+  // @ts-ignore
+  import heroImage from './assets/images/hero-image.png'
 
   let inputText = "";
   let outputText = "";
@@ -80,6 +81,7 @@
 
 <div class="container">
   <div class="header-section">
+      <!-- svelte-ignore a11y-img-redundant-alt -->
       <img src={heroImage} alt="Hero Image" class="hero-image" />
       <div>
           <h2>Assignment:</h2>
