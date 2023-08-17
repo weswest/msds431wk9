@@ -1,17 +1,22 @@
 <script>
-  import {Greet} from '../wailsjs/go/main/App.js'
+//  import {Greet} from '../wailsjs/go/main/App.js'
   import {CheckTermEmbed} from '../wailsjs/go/main/App.js'
-  import {CheckDir} from '../wailsjs/go/main/App.js'
-  import {RunDebug} from '../wailsjs/go/main/App.js'
   // @ts-ignore
   import heroImage from './assets/images/hero-image.png'
 
   let inputText = "";
   let outputText = "";
 
-  const sample1 = `golang`; 
-  const sample2 = `blueberry`; 
+  const validTerms = [
+    "break", "case", "chan", "const", "continue", "defer", "else", "fallthrough",
+    "for", "func", "go", "goto", "if", "import", "interface", "map", "package",
+    "range", "return", "select", "struct", "switch", "type", "var"
+  ];
 
+  const sillyTerms = [
+    "blueberry", "dreams", "unicorn", "rainbow", "chocolate", "fairy", "moonbeam",
+    "sparkle", "glitter", "bubble", "whimsy", "twinkle", "fizz", "flutter", "giggle"
+  ];
   function evaluateText() {
     console.log("evaluateText function called with input:", inputText);
     CheckTermEmbed(inputText).then(result => {
@@ -20,18 +25,13 @@
     });
   }
 
-  function runDebug() {
-    console.log("evaluateText function called with input:", inputText);
-    RunDebug().then(result => {
-        console.log("Received result from backend:", result);
-        outputText = result;
-    });
+  function loadSample(isValid) {
+    if (isValid) {
+      inputText = validTerms[Math.floor(Math.random() * validTerms.length)];
+    } else {
+      inputText = sillyTerms[Math.floor(Math.random() * sillyTerms.length)];
+    }
   }
-
-  function loadSample(sample) {
-    inputText = sample;
-  }
-
 
 </script>
 
@@ -95,32 +95,36 @@
       <!-- svelte-ignore a11y-img-redundant-alt -->
       <img src={heroImage} alt="Hero Image" class="hero-image" />
       <div>
-          <h2>Assignment:</h2>
+          <h2>Week 9 Assignment: Access A Database</h2>
           <p>
-              MVP.  Wk9 Assignment: Access Database
+              This assignment mimicks a desktop application that allows the user to ask questions of an LLM and receive a response.  The functionality of posing a question to an LLM and receiving an answer has been replaced with a database lookup.
           </p>
           <h2>How to Use</h2>
           <p>
-              Enter text and click evaluate
+              Enter text and click evaluate.  If the term exists in the database, the definition will be returned.  If the term does not exist in the database, an error message will be returned.  Note that the database search is case sensitive and requires an exact match.
           </p>
           <p>
-              If you want some sample text to get you started, please click the samples on the right.
+            The "Valid Term" button on the right will randomly select a term that exists in the database.  Note this has been hard-coded.
           </p>
       </div>
   </div>
   <div class="input-section">
       <textarea bind:value={inputText} placeholder="Enter your text here..."></textarea>
       <div class="sample-buttons">
-          <button on:click={() => loadSample(sample1)}>Sample 1</button>
-          <button on:click={() => loadSample(sample2)}>Sample 2</button>
+          <button on:click={() => loadSample(true)}>Valid Term</button>
+          <button on:click={() => loadSample(false)}>Invalid Term</button>
       </div>
   </div>
   <div class="button-container">
       <button on:click={evaluateText}>Evaluate</button>
-      <button on:click={runDebug}>Debug</button>
   </div>
   <div class="output">{outputText}</div>
   <div class="rules">
-      <h3>Sample bottom text</h3>
-  </div>
+      <h3>Valid Terms</h3>
+      <p>
+        "break", "case", "chan", "const", "continue", "defer", "else", "fallthrough",
+        "for", "func", "go", "goto", "if", "import", "interface", "map", "package",
+        "range", "return", "select", "struct", "switch", "type", "var"
+    </p>
+</div>
 </div>
