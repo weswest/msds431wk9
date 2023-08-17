@@ -1,5 +1,8 @@
 <script>
   import {Greet} from '../wailsjs/go/main/App.js'
+  import {CheckTermEmbed} from '../wailsjs/go/main/App.js'
+  import {CheckDir} from '../wailsjs/go/main/App.js'
+  import {RunDebug} from '../wailsjs/go/main/App.js'
   // @ts-ignore
   import heroImage from './assets/images/hero-image.png'
 
@@ -11,7 +14,15 @@
 
   function evaluateText() {
     console.log("evaluateText function called with input:", inputText);
-    Greet(inputText).then(result => {
+    CheckTermEmbed(inputText).then(result => {
+        console.log("Received result from backend:", result);
+        outputText = result;
+    });
+  }
+
+  function runDebug() {
+    console.log("evaluateText function called with input:", inputText);
+    RunDebug().then(result => {
         console.log("Received result from backend:", result);
         outputText = result;
     });
@@ -86,11 +97,11 @@
       <div>
           <h2>Assignment:</h2>
           <p>
-              Create a program using Wails, Svelte, and Vale that allows users to enter text and receive feedback on their grammar. As a test case, focus is on whether "data" should be plural or singular.
+              MVP.  Wk9 Assignment: Access Database
           </p>
           <h2>How to Use</h2>
           <p>
-              Enter text and click evaluate. The only rules turned on are the data singular / plural, as defined by the radio boxes below. Please see the bottom for the specific rules that are captured. Note that these rules are hard-coded: with more time we can add more sophistication.
+              Enter text and click evaluate
           </p>
           <p>
               If you want some sample text to get you started, please click the samples on the right.
@@ -104,10 +115,12 @@
           <button on:click={() => loadSample(sample2)}>Sample 2</button>
       </div>
   </div>
-  <button on:click={evaluateText}>Evaluate</button>
+  <div class="button-container">
+      <button on:click={evaluateText}>Evaluate</button>
+      <button on:click={runDebug}>Debug</button>
+  </div>
   <div class="output">{outputText}</div>
   <div class="rules">
       <h3>Sample bottom text</h3>
-
   </div>
 </div>
