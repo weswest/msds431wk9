@@ -19,39 +19,12 @@ const dbFileName = "QandA.db" //VERIFY THIS MATCHES GO EMBED BELOW
 //go:embed dist/QandA.db
 var database embed.FS
 
-func ListDatabase() ([]string, error) {
-	var results []string
-
-	fn := filepath.Join(dbDirName, dbFileName)
-
-	db, err := sql.Open("sqlite", fn)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
-
-	rows, err := db.Query("select * from qat")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int
-		var question string
-		var answer string
-		rows.Scan(&id, &question, &answer)
-		results = append(results, fmt.Sprintf("The answer to %s is %s", question, answer))
-	}
-	return results, nil
-}
-
 func TermExistsEmbed(term string) (string, bool, error) {
 
 	// Read the embedded database into memory
 	dbData, err := fs.ReadFile(database, filepath.Join(dbDirName, dbFileName))
 	if err != nil {
-		return "", false, fmt.Errorf("failed to read embedded database: %s", err)
+		return "", false, fmt.Errorf("No database found. Did you build it? Check the following:\n1. Go to ./setup and run \"runThisFirstDatabaseCreate\". You may need to add the flag -forceRebuild=true\n2. Verify that there is a valid file at ./backend/dist/QandA.db\n3. Run 'wails build' again to rebuild.")
 	}
 
 	// Use the in-memory database driver of SQLite

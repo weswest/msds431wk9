@@ -48,8 +48,8 @@ func deleteDatabase() error {
 	fn := filepath.Join(dbDirName, dbFileName)
 	// Check if the database file exists
 	if _, err := os.Stat(fn); !os.IsNotExist(err) {
-		// Delete the existing database file
-		err := os.Remove(fn)
+		// Delete the entire directory
+		err := os.RemoveAll(dbDirName)
 		if err != nil {
 			return err
 		}
@@ -62,6 +62,11 @@ func createDatabaseIfNeeded(forceRebuild bool) error {
 
 	if forceRebuild {
 		err := deleteDatabase()
+		if err != nil {
+			return err
+		}
+		// Create the directory again
+		err = os.MkdirAll(dbDirName, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -116,7 +121,7 @@ func createDatabaseIfNeeded(forceRebuild bool) error {
 
 func main() {
 	// Handle forceRebuild input
-	forceRebuildPtr := flag.Bool("forceRebuild", false, "Force database rebuild")
+	forceRebuildPtr := flag.Bool("forceRebuild", true, "Force database rebuild")
 	flag.Parse()
 
 	if *forceRebuildPtr {
