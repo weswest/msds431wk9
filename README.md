@@ -36,8 +36,8 @@ With that said, we will need the following infrastructure:
 Item #1 is built to a minimally viable spec, although sqlite isn't designed to handle massive amounts of data and/or concurrent users.  In my hypothetical above where the app is built and deployed with the sqlite server embedded in the app, the big determination for whether sqlite would work is if the database got too big.
 
 Item #2 is far insufficient for what we would need.  If we lean on, for example, some of the approaches we took in [MSDS-453 Natural Language Processing](https://github.com/weswest/MSDS453), then two immediate options come to mind:
-2a. Run cosine similarity to quantitatively match the question asked with questions in the database.  The top-scoring question(s) is/are then used to return a sql lookup similar to how this project exists right now.  We essentially loosen the requirement for a direct match with a fuzzy match, using sophisticated and generally accepted techniques
-2b. Run a predictive model trained on question/answer pairs.  Same deal, produce a "match" score, but do it using an LLM.
+* 2a. Run cosine similarity to quantitatively match the question asked with questions in the database.  The top-scoring question(s) is/are then used to return a sql lookup similar to how this project exists right now.  We essentially loosen the requirement for a direct match with a fuzzy match, using sophisticated and generally accepted techniques
+* 2b. Run a predictive model trained on question/answer pairs.  Same deal, produce a "match" score, but do it using an LLM.
 
 2a wouldn't require a ton of additional work on top of what we are already doing.  We'd need to build some logic to maintain a list of questions and their appropriate vectors, and then build some logic to run the cosine similarity scores.  The existing infrastructure to look up a query from the database and return it would be left intact.  I doubt this would materially increase the size of the application but we would need to optimize performance.
 
